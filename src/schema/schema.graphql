@@ -6,53 +6,9 @@ directive @specifiedBy(
   url: String!
 ) on SCALAR
 
-"""@model"""
-type Comment {
-  _id: GraphbackObjectID!
-  text: String
-  description: String
-
-  """@manyToOne(field: 'comments', key: 'noteId')"""
-  note: Note
-}
-
-input CommentFilter {
-  _id: GraphbackObjectIDInput
-  text: StringInput
-  description: StringInput
-  noteId: GraphbackObjectIDInput
-  and: [CommentFilter!]
-  or: [CommentFilter!]
-  not: CommentFilter
-}
-
-type CommentResultList {
-  items: [Comment]!
-  offset: Int
-  limit: Int
-  count: Int
-}
-
-input CommentSubscriptionFilter {
-  and: [CommentSubscriptionFilter!]
-  or: [CommentSubscriptionFilter!]
-  not: CommentSubscriptionFilter
-  _id: GraphbackObjectIDInput
-  text: StringInput
-  description: StringInput
-}
-
-input CreateCommentInput {
-  _id: GraphbackObjectID
-  text: String
-  description: String
-  noteId: GraphbackObjectID
-}
-
-input CreateNoteInput {
+input CreateTodoInput {
   _id: GraphbackObjectID
   title: String!
-  description: String
 }
 
 scalar GraphbackObjectID
@@ -68,64 +24,15 @@ input GraphbackObjectIDInput {
   between: [GraphbackObjectID!]
 }
 
-input MutateCommentInput {
-  _id: GraphbackObjectID!
-  text: String
-  description: String
-  noteId: GraphbackObjectID
-}
-
-input MutateNoteInput {
+input MutateTodoInput {
   _id: GraphbackObjectID!
   title: String
-  description: String
 }
 
 type Mutation {
-  createNote(input: CreateNoteInput!): Note
-  updateNote(input: MutateNoteInput!): Note
-  deleteNote(input: MutateNoteInput!): Note
-  createComment(input: CreateCommentInput!): Comment
-  updateComment(input: MutateCommentInput!): Comment
-  deleteComment(input: MutateCommentInput!): Comment
-}
-
-"""@model"""
-type Note {
-  _id: GraphbackObjectID!
-  title: String!
-  description: String
-
-  """
-  @oneToMany(field: 'note', key: 'noteId')
-  @oneToMany(field: 'note')
-  """
-  comments(filter: CommentFilter): [Comment]!
-}
-
-input NoteFilter {
-  _id: GraphbackObjectIDInput
-  title: StringInput
-  description: StringInput
-  and: [NoteFilter!]
-  or: [NoteFilter!]
-  not: NoteFilter
-}
-
-type NoteResultList {
-  items: [Note]!
-  offset: Int
-  limit: Int
-  count: Int
-}
-
-input NoteSubscriptionFilter {
-  and: [NoteSubscriptionFilter!]
-  or: [NoteSubscriptionFilter!]
-  not: NoteSubscriptionFilter
-  _id: GraphbackObjectIDInput
-  title: StringInput
-  description: StringInput
+  createTodo(input: CreateTodoInput!): Todo
+  updateTodo(input: MutateTodoInput!): Todo
+  deleteTodo(input: MutateTodoInput!): Todo
 }
 
 input OrderByInput {
@@ -138,12 +45,11 @@ input PageRequest {
   offset: Int
 }
 
+"""@model"""
 type Query {
-  getDraftNotes: [Note]
-  getNote(id: GraphbackObjectID!): Note
-  findNotes(filter: NoteFilter, page: PageRequest, orderBy: OrderByInput): NoteResultList!
-  getComment(id: GraphbackObjectID!): Comment
-  findComments(filter: CommentFilter, page: PageRequest, orderBy: OrderByInput): CommentResultList!
+  getDraftTodos: [Todo]
+  getTodo(id: GraphbackObjectID!): Todo
+  findTodos(filter: TodoFilter, page: PageRequest, orderBy: OrderByInput): TodoResultList!
 }
 
 enum SortDirectionEnum {
@@ -165,10 +71,36 @@ input StringInput {
 }
 
 type Subscription {
-  newNote(filter: NoteSubscriptionFilter): Note!
-  updatedNote(filter: NoteSubscriptionFilter): Note!
-  deletedNote(filter: NoteSubscriptionFilter): Note!
-  newComment(filter: CommentSubscriptionFilter): Comment!
-  updatedComment(filter: CommentSubscriptionFilter): Comment!
-  deletedComment(filter: CommentSubscriptionFilter): Comment!
+  newTodo(filter: TodoSubscriptionFilter): Todo!
+  updatedTodo(filter: TodoSubscriptionFilter): Todo!
+  deletedTodo(filter: TodoSubscriptionFilter): Todo!
+}
+
+"""@model"""
+type Todo {
+  _id: GraphbackObjectID!
+  title: String!
+}
+
+input TodoFilter {
+  _id: GraphbackObjectIDInput
+  title: StringInput
+  and: [TodoFilter!]
+  or: [TodoFilter!]
+  not: TodoFilter
+}
+
+type TodoResultList {
+  items: [Todo]!
+  offset: Int
+  limit: Int
+  count: Int
+}
+
+input TodoSubscriptionFilter {
+  and: [TodoSubscriptionFilter!]
+  or: [TodoSubscriptionFilter!]
+  not: TodoSubscriptionFilter
+  _id: GraphbackObjectIDInput
+  title: StringInput
 }

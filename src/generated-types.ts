@@ -11,54 +11,9 @@ export type Scalars = {
   GraphbackObjectID: string;
 };
 
-/** @model */
-export type Comment = {
-  __typename?: 'Comment';
-  _id: Scalars['GraphbackObjectID'];
-  text?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  /** @manyToOne(field: 'comments', key: 'noteId') */
-  note?: Maybe<Note>;
-};
-
-export type CommentFilter = {
-  _id?: Maybe<GraphbackObjectIdInput>;
-  text?: Maybe<StringInput>;
-  description?: Maybe<StringInput>;
-  noteId?: Maybe<GraphbackObjectIdInput>;
-  and?: Maybe<Array<CommentFilter>>;
-  or?: Maybe<Array<CommentFilter>>;
-  not?: Maybe<CommentFilter>;
-};
-
-export type CommentResultList = {
-  __typename?: 'CommentResultList';
-  items: Array<Maybe<Comment>>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type CommentSubscriptionFilter = {
-  and?: Maybe<Array<CommentSubscriptionFilter>>;
-  or?: Maybe<Array<CommentSubscriptionFilter>>;
-  not?: Maybe<CommentSubscriptionFilter>;
-  _id?: Maybe<GraphbackObjectIdInput>;
-  text?: Maybe<StringInput>;
-  description?: Maybe<StringInput>;
-};
-
-export type CreateCommentInput = {
-  _id?: Maybe<Scalars['GraphbackObjectID']>;
-  text?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  noteId?: Maybe<Scalars['GraphbackObjectID']>;
-};
-
-export type CreateNoteInput = {
+export type CreateTodoInput = {
   _id?: Maybe<Scalars['GraphbackObjectID']>;
   title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
 };
 
 
@@ -73,102 +28,31 @@ export type GraphbackObjectIdInput = {
   between?: Maybe<Array<Scalars['GraphbackObjectID']>>;
 };
 
-export type MutateCommentInput = {
-  _id: Scalars['GraphbackObjectID'];
-  text?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  noteId?: Maybe<Scalars['GraphbackObjectID']>;
-};
-
-export type MutateNoteInput = {
+export type MutateTodoInput = {
   _id: Scalars['GraphbackObjectID'];
   title?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createNote?: Maybe<Note>;
-  updateNote?: Maybe<Note>;
-  deleteNote?: Maybe<Note>;
-  createComment?: Maybe<Comment>;
-  updateComment?: Maybe<Comment>;
-  deleteComment?: Maybe<Comment>;
+  createTodo?: Maybe<Todo>;
+  updateTodo?: Maybe<Todo>;
+  deleteTodo?: Maybe<Todo>;
 };
 
 
-export type MutationCreateNoteArgs = {
-  input: CreateNoteInput;
+export type MutationCreateTodoArgs = {
+  input: CreateTodoInput;
 };
 
 
-export type MutationUpdateNoteArgs = {
-  input: MutateNoteInput;
+export type MutationUpdateTodoArgs = {
+  input: MutateTodoInput;
 };
 
 
-export type MutationDeleteNoteArgs = {
-  input: MutateNoteInput;
-};
-
-
-export type MutationCreateCommentArgs = {
-  input: CreateCommentInput;
-};
-
-
-export type MutationUpdateCommentArgs = {
-  input: MutateCommentInput;
-};
-
-
-export type MutationDeleteCommentArgs = {
-  input: MutateCommentInput;
-};
-
-/** @model */
-export type Note = {
-  __typename?: 'Note';
-  _id: Scalars['GraphbackObjectID'];
-  title: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  /**
-   * @oneToMany(field: 'note', key: 'noteId')
-   * @oneToMany(field: 'note')
-   */
-  comments: Array<Maybe<Comment>>;
-};
-
-
-/** @model */
-export type NoteCommentsArgs = {
-  filter?: Maybe<CommentFilter>;
-};
-
-export type NoteFilter = {
-  _id?: Maybe<GraphbackObjectIdInput>;
-  title?: Maybe<StringInput>;
-  description?: Maybe<StringInput>;
-  and?: Maybe<Array<NoteFilter>>;
-  or?: Maybe<Array<NoteFilter>>;
-  not?: Maybe<NoteFilter>;
-};
-
-export type NoteResultList = {
-  __typename?: 'NoteResultList';
-  items: Array<Maybe<Note>>;
-  offset?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  count?: Maybe<Scalars['Int']>;
-};
-
-export type NoteSubscriptionFilter = {
-  and?: Maybe<Array<NoteSubscriptionFilter>>;
-  or?: Maybe<Array<NoteSubscriptionFilter>>;
-  not?: Maybe<NoteSubscriptionFilter>;
-  _id?: Maybe<GraphbackObjectIdInput>;
-  title?: Maybe<StringInput>;
-  description?: Maybe<StringInput>;
+export type MutationDeleteTodoArgs = {
+  input: MutateTodoInput;
 };
 
 export type OrderByInput = {
@@ -181,35 +65,24 @@ export type PageRequest = {
   offset?: Maybe<Scalars['Int']>;
 };
 
+/** @model */
 export type Query = {
   __typename?: 'Query';
-  getDraftNotes?: Maybe<Array<Maybe<Note>>>;
-  getNote?: Maybe<Note>;
-  findNotes: NoteResultList;
-  getComment?: Maybe<Comment>;
-  findComments: CommentResultList;
+  getDraftTodos?: Maybe<Array<Maybe<Todo>>>;
+  getTodo?: Maybe<Todo>;
+  findTodos: TodoResultList;
 };
 
 
-export type QueryGetNoteArgs = {
+/** @model */
+export type QueryGetTodoArgs = {
   id: Scalars['GraphbackObjectID'];
 };
 
 
-export type QueryFindNotesArgs = {
-  filter?: Maybe<NoteFilter>;
-  page?: Maybe<PageRequest>;
-  orderBy?: Maybe<OrderByInput>;
-};
-
-
-export type QueryGetCommentArgs = {
-  id: Scalars['GraphbackObjectID'];
-};
-
-
-export type QueryFindCommentsArgs = {
-  filter?: Maybe<CommentFilter>;
+/** @model */
+export type QueryFindTodosArgs = {
+  filter?: Maybe<TodoFilter>;
   page?: Maybe<PageRequest>;
   orderBy?: Maybe<OrderByInput>;
 };
@@ -234,40 +107,53 @@ export type StringInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newNote: Note;
-  updatedNote: Note;
-  deletedNote: Note;
-  newComment: Comment;
-  updatedComment: Comment;
-  deletedComment: Comment;
+  newTodo: Todo;
+  updatedTodo: Todo;
+  deletedTodo: Todo;
 };
 
 
-export type SubscriptionNewNoteArgs = {
-  filter?: Maybe<NoteSubscriptionFilter>;
+export type SubscriptionNewTodoArgs = {
+  filter?: Maybe<TodoSubscriptionFilter>;
 };
 
 
-export type SubscriptionUpdatedNoteArgs = {
-  filter?: Maybe<NoteSubscriptionFilter>;
+export type SubscriptionUpdatedTodoArgs = {
+  filter?: Maybe<TodoSubscriptionFilter>;
 };
 
 
-export type SubscriptionDeletedNoteArgs = {
-  filter?: Maybe<NoteSubscriptionFilter>;
+export type SubscriptionDeletedTodoArgs = {
+  filter?: Maybe<TodoSubscriptionFilter>;
 };
 
-
-export type SubscriptionNewCommentArgs = {
-  filter?: Maybe<CommentSubscriptionFilter>;
+/** @model */
+export type Todo = {
+  __typename?: 'Todo';
+  _id: Scalars['GraphbackObjectID'];
+  title: Scalars['String'];
 };
 
-
-export type SubscriptionUpdatedCommentArgs = {
-  filter?: Maybe<CommentSubscriptionFilter>;
+export type TodoFilter = {
+  _id?: Maybe<GraphbackObjectIdInput>;
+  title?: Maybe<StringInput>;
+  and?: Maybe<Array<TodoFilter>>;
+  or?: Maybe<Array<TodoFilter>>;
+  not?: Maybe<TodoFilter>;
 };
 
+export type TodoResultList = {
+  __typename?: 'TodoResultList';
+  items: Array<Maybe<Todo>>;
+  offset?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  count?: Maybe<Scalars['Int']>;
+};
 
-export type SubscriptionDeletedCommentArgs = {
-  filter?: Maybe<CommentSubscriptionFilter>;
+export type TodoSubscriptionFilter = {
+  and?: Maybe<Array<TodoSubscriptionFilter>>;
+  or?: Maybe<Array<TodoSubscriptionFilter>>;
+  not?: Maybe<TodoSubscriptionFilter>;
+  _id?: Maybe<GraphbackObjectIdInput>;
+  title?: Maybe<StringInput>;
 };
