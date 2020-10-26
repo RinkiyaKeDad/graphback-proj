@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import EditTodo from './EditTodo';
 import { Todo } from '../../generated-types';
-import { Button, Card } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 
 const OneTodo = ({ _id, title }: Todo) => {
   const [todoEdit, setTodoEdit] = useState(false);
 
   return (
-    <div>
-      <Card className='inputCard'>
-        <li className='OneNote'>
-          <strong>{title}</strong>:&nbsp;
+    <Grid container xs={12} style={{ margin: '5px' }}>
+      <Grid item container xs={12}>
+        <Grid item xs={10}>
+          <Typography variant='h6' gutterBottom>
+            {title}
+          </Typography>
+        </Grid>
+        <Grid item xs={2}>
           <Button
             onClick={() => setTodoEdit(!todoEdit)}
             variant='outlined'
@@ -18,18 +23,14 @@ const OneTodo = ({ _id, title }: Todo) => {
           >
             Edit
           </Button>
-          {todoEdit ? (
-            <EditTodo
-              _id={_id}
-              title={title}
-              editState={setTodoEdit}
-            ></EditTodo>
-          ) : (
-            <div></div>
-          )}
-        </li>
-      </Card>
-    </div>
+        </Grid>
+        {todoEdit ? (
+          <EditTodo _id={_id} title={title} editState={setTodoEdit}></EditTodo>
+        ) : (
+          <div></div>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 

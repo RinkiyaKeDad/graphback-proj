@@ -1,42 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFindTodosQuery } from './generated-types';
 import CreateTodo from './components/todos/CreateTodo';
 import OneTodo from './components/todos/OneTodo';
-import { Checkbox, Box, Container, List, ListItem } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 const App: React.FC = () => {
   const allTodos = useFindTodosQuery();
   allTodos.startPolling(2000);
   console.log(allTodos.data?.findTodos);
 
-  const [viewDraftTodos, setViewDraftTodos] = useState(false);
-
-  const todoItems = viewDraftTodos
-    ? allTodos.data?.findTodos?.items
-    : allTodos.data?.findTodos?.items;
+  const todoItems = allTodos.data?.findTodos?.items;
 
   return (
-    <Container>
-      <CreateTodo />
-      <Box>
-        <div style={{ marginLeft: 400, paddingTop: 50 }}>
-          <Checkbox
-            checked={viewDraftTodos}
-            onChange={() => setViewDraftTodos(!viewDraftTodos)}
-          />{' '}
-          <b>VIEW DRAFT Todos</b>
-        </div>
-        <ul>
-          {
-            // TODO fix typings
-            todoItems &&
-              todoItems.map((todo: any) => (
-                <OneTodo key={todo._id} _id={todo._id} title={todo.title} />
-              ))
-          }
-        </ul>
-      </Box>
-    </Container>
+    <Grid container justify='center' spacing={2}>
+      <Grid item xs={1} sm={2} />
+      <Grid item xs={10} sm={8}>
+        <Grid
+          style={{ marginBottom: '10px' }}
+          justify='center'
+          container
+          item
+          xs={12}
+        >
+          <CreateTodo />
+        </Grid>
+        <Grid justify='center' container item xs={12}>
+          {todoItems &&
+            todoItems.map((todo: any) => (
+              <OneTodo key={todo._id} _id={todo._id} title={todo.title} />
+            ))}
+        </Grid>
+      </Grid>
+      <Grid item xs={1} sm={2} />{' '}
+    </Grid>
   );
 };
 
