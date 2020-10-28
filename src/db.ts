@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import { Password, Name } from './CONSTS';
+//import { Password, Name } from './CONSTS';
 
 export async function connectDB() {
   let url: string;
@@ -14,7 +14,7 @@ export async function connectDB() {
   } = process.env;
 
   //if (DB_USER && DB_PASSWORD) {
-  url = `mongodb+srv://${Name}:${Password}@cluster0.tfneq.mongodb.net/graphback-prod?retryWrites=true&w=majority`;
+  url = `mongodb+srv://${process.env.dbname}:${process.env.dbpassword}@cluster0.tfneq.mongodb.net/graphback-prod?retryWrites=true&w=majority`;
   //url = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}?authSource=${DB_AUTHSOURCE}`;
   //} else {
   //url = `mongodb://${DB_HOST}:${DB_PORT}/${DB_DATABASE}`;
